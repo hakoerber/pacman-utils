@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# reads packages from stdin and outputs a list of all their dependencies
+
+tmpfile="$(mktemp)"
+while read package ; do
+    pactree -l $package >> "$tmpfile"
+done
+sort "$tmpfile" | uniq

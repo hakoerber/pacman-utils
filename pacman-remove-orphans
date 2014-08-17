@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+pacman -Qtdq >/dev/null && pacman -Rns $(pacman -Qtdq)

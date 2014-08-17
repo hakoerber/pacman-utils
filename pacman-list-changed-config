@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Prints a list with all files tracked by pacman that were modified.
+
+pacman -Qii | awk '/^MODIFIED/ {print $2}'
