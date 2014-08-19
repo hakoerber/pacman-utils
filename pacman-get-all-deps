@@ -4,6 +4,6 @@
 
 tmpfile="$(mktemp)"
 while read package ; do
-    pactree -l $package >> "$tmpfile"
+    pactree -l $package | cut -d ' ' -f 1 >> "$tmpfile"
 done
 sort "$tmpfile" | uniq

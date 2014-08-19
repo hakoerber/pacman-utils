@@ -2,8 +2,13 @@
 
 # uninstalls all packages not found in the files give on the command line
 # this is super hacky but works
+# 
+# don't use this please
 
 (( $(id -u) != 0 )) && { echo "root required" ; exit 1 ; }
 [[ -z "$*" ]] && { echo "no files given" ; exit 2 ; }
 for input in "$@" ; do [[ -f "$input" ]] || { echo "invalid file: $input" ; exit 2 ; } ; done
-pacman -D --asdeps $(comm -13 <(cat "$@" <(pacman -Qgq base{,-devel}) | sort) <(pacman -Qqe | sort)) && ./pacman-remove-orphans
+expl=$(cat "$@" <(pacman -Qgq base{,-devel}))
+deps=$(comm -13 <(cat "$@" <(pacman -Qgq base{,-devel}) | sort) <(pacman -Qqe | sort )) 
+pacman -D --asexplicit $expl
+[[ -n "$deps" ]] && { pacman -D --asdeps $deps ; pacman-remove-orphans ; }
